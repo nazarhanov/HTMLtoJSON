@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page</title>
+  </head>
+  <body class="page">
+    <header class="header">header</header>
+    <main class="main">hello</main>
+    <footer class="footer">footer</footer>
+  </body>
+
+  <script>
+    // html inside script works (processes) too ..
+    // parser excepts js comments and strings
+    var popup = `<div class="popup"></div>`;
+
+    document.body.innerHTML += popup;
+  </script>
+</html>

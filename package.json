@@ -1,0 +1,24 @@
+{
+  "name": "htmltojson",
+  "version": "1.0.0",
+  "description": "Fast & Tiny HTML parser",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nazarhanov/HTMLtoJSON.git"
+  },
+  "keywords": [
+    "html",
+    "parser"
+  ],
+  "author": "Alisher",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nazarhanov/HTMLtoJSON/issues"
+  },
+  "homepage": "https://github.com/Nazarhanov/HTMLtoJSON#readme"
+}
