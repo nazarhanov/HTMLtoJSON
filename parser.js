@@ -219,9 +219,12 @@ function process(html, handler) {
         if (equals("/*")) s = STATE.STYLE_TAG | STATE.COMMENT;
         else if (equals("'")) s = STATE.STYLE_TAG | STATE.SINGLE_QUOTE;
         else if (equals('"')) s = STATE.STYLE_TAG | STATE.DOUBLE_QUOTE;
-        else if (equals("</style>", cut(i + 1, i + 9))) {
-          s = STATE.TEXT;
-          this.close();
+        else if (equals("<")) {
+          if (equals("</style>", cut(i, i + 8))) {
+            s = STATE.TEXT;
+            i--;
+            this.close();
+          }
         }
       },
       close: function () {
@@ -264,9 +267,12 @@ function process(html, handler) {
         else if (equals("'")) s = STATE.SCRIPT_TAG | STATE.SINGLE_QUOTE;
         else if (equals('"')) s = STATE.SCRIPT_TAG | STATE.DOUBLE_QUOTE;
         else if (equals("`")) s = STATE.SCRIPT_TAG | STATE.MULTILINE;
-        else if (equals("</script>", cut(i + 1, i + 10))) {
-          s = STATE.TEXT;
-          this.close();
+        else if (equals("<")) {
+          if (equals("</script>", cut(i, i + 9))) {
+            s = STATE.TEXT;
+            i--;
+            this.close();
+          }
         }
       },
       close: function () {
