@@ -28,8 +28,8 @@ function process(html, handler) {
     f = STATE.NONE; // additional flags
 
   // checks last html symbols
-  // equals to passed char or string
-  function equals(str, last) {
+  // equal to passed char or string
+  function equal(str, last) {
     if (str.length <= 1 && !last) return str === c;
     return str === (last ? last : html.substring(i - str.length, i));
   }
@@ -75,7 +75,7 @@ function process(html, handler) {
         handler.onText(text);
       },
       do: function () {
-        if (equals("<")) {
+        if (equal("<")) {
           s = STATE.OPEN_TAG | STATE.CLOSE_TAG;
         }
       },
@@ -90,10 +90,10 @@ function process(html, handler) {
         if (is(STATE.OPEN_TAG)) stack.set(start);
       },
       do: function () {
-        if (equals("!--")) s = STATE.COMMENT;
-        else if (equals("/")) s = STATE.CLOSE_TAG;
-        else if (equals(" ")) s = STATE.TEXT;
-        else if (!equals("!") && !equals("-")) s = STATE.OPEN_TAG;
+        if (equal("!--")) s = STATE.COMMENT;
+        else if (equal("/")) s = STATE.CLOSE_TAG;
+        else if (equal(" ")) s = STATE.TEXT;
+        else if (!equal("!") && !equal("-")) s = STATE.OPEN_TAG;
       },
     };
 
@@ -109,8 +109,8 @@ function process(html, handler) {
         handler.onOpenTag(tag);
       },
       do: function () {
-        if (equals(">")) s = STATE.SELF_CLOSING;
-        else if (equals(" ")) s = STATE.ATTR_NAME;
+        if (equal(">")) s = STATE.SELF_CLOSING;
+        else if (equal(" ")) s = STATE.ATTR_NAME;
       },
     };
 
@@ -126,7 +126,7 @@ function process(html, handler) {
         handler.onCloseTag(tag);
       },
       do: function () {
-        if (equals(">")) {
+        if (equal(">")) {
           s = STATE.TEXT;
         }
       },
@@ -144,7 +144,7 @@ function process(html, handler) {
         if (f & STATE.SCRIPT_TAG) s = STATE.OPEN_TAG | STATE.SCRIPT_TAG;
       },
       do: function () {
-        if (equals("/>", cut(i - 2, i))) this.mark();
+        if (equal("/>", cut(i - 2, i))) this.mark();
         s = STATE.TEXT;
       },
       mark: function () {
@@ -158,7 +158,7 @@ function process(html, handler) {
         stack.set(i);
       },
       exit: function () {
-        if (equals("/", cut(i - 1, i))) return;
+        if (equal("/", cut(i - 1, i))) return;
 
         var attr = cut(stack.get(), i);
         if (!attr) return;
@@ -167,9 +167,9 @@ function process(html, handler) {
         handler.onAttrName(attr);
       },
       do: function () {
-        if (equals(" ") || equals("/")) this.repeat();
-        else if (equals(">")) s = STATE.SELF_CLOSING;
-        else if (equals("=")) s = STATE.ATTR_VALUE;
+        if (equal(" ") || equal("/")) this.repeat();
+        else if (equal(">")) s = STATE.SELF_CLOSING;
+        else if (equal("=")) s = STATE.ATTR_VALUE;
       },
       repeat: function () {
         this.exit();
@@ -179,10 +179,10 @@ function process(html, handler) {
 
     this[STATE.ATTR_VALUE] = {
       enter: function () {
-        if (equals("'")) {
+        if (equal("'")) {
           s |= STATE.SINGLE_QUOTE;
           stack.set(i + 1);
-        } else if (equals('"')) {
+        } else if (equal('"')) {
           s |= STATE.DOUBLE_QUOTE;
           stack.set(i + 1);
         } else stack.set(i);
@@ -195,32 +195,32 @@ function process(html, handler) {
         handler.onAttrValue(value);
       },
       do: function () {
-        if (equals(" ")) s = STATE.ATTR_NAME;
-        else if (equals(">")) s = STATE.SELF_CLOSING;
+        if (equal(" ")) s = STATE.ATTR_NAME;
+        else if (equal(">")) s = STATE.SELF_CLOSING;
       },
     };
 
     this[STATE.ATTR_VALUE | STATE.SINGLE_QUOTE] = {
       exit: this[STATE.ATTR_VALUE].exit,
       do: function () {
-        if (equals("'")) s = STATE.ATTR_NAME;
+        if (equal("'")) s = STATE.ATTR_NAME;
       },
     };
 
     this[STATE.ATTR_VALUE | STATE.DOUBLE_QUOTE] = {
       exit: this[STATE.ATTR_VALUE].exit,
       do: function () {
-        if (equals('"')) s = STATE.ATTR_NAME;
+        if (equal('"')) s = STATE.ATTR_NAME;
       },
     };
 
     this[STATE.STYLE_TAG] = {
       do: function () {
-        if (equals("/*")) s = STATE.STYLE_TAG | STATE.COMMENT;
-        else if (equals("'")) s = STATE.STYLE_TAG | STATE.SINGLE_QUOTE;
-        else if (equals('"')) s = STATE.STYLE_TAG | STATE.DOUBLE_QUOTE;
-        else if (equals("<")) {
-          if (equals("</style>", cut(i, i + 8))) {
+        if (equal("/*")) s = STATE.STYLE_TAG | STATE.COMMENT;
+        else if (equal("'")) s = STATE.STYLE_TAG | STATE.SINGLE_QUOTE;
+        else if (equal('"')) s = STATE.STYLE_TAG | STATE.DOUBLE_QUOTE;
+        else if (equal("<")) {
+          if (equal("</style>", cut(i, i + 8))) {
             s = STATE.TEXT;
             i--;
             this.close();
@@ -244,31 +244,31 @@ function process(html, handler) {
 
     this[STATE.STYLE_TAG | STATE.COMMENT] = {
       do: function () {
-        if (equals("*/")) s = STATE.STYLE_TAG;
+        if (equal("*/")) s = STATE.STYLE_TAG;
       },
     };
 
     this[STATE.STYLE_TAG | STATE.SINGLE_QUOTE] = {
       do: function () {
-        if (equals("'")) s = STATE.STYLE_TAG;
+        if (equal("'")) s = STATE.STYLE_TAG;
       },
     };
 
     this[STATE.STYLE_TAG | STATE.DOUBLE_QUOTE] = {
       do: function () {
-        if (equals('"')) s = STATE.STYLE_TAG;
+        if (equal('"')) s = STATE.STYLE_TAG;
       },
     };
 
     this[STATE.SCRIPT_TAG] = {
       do: function () {
-        if (equals("/*")) s = STATE.SCRIPT_TAG | STATE.COMMENT | STATE.MULTILINE;
-        else if (equals("//")) s = STATE.SCRIPT_TAG | STATE.COMMENT | STATE.ONELINE;
-        else if (equals("'")) s = STATE.SCRIPT_TAG | STATE.SINGLE_QUOTE;
-        else if (equals('"')) s = STATE.SCRIPT_TAG | STATE.DOUBLE_QUOTE;
-        else if (equals("`")) s = STATE.SCRIPT_TAG | STATE.MULTILINE;
-        else if (equals("<")) {
-          if (equals("</script>", cut(i, i + 9))) {
+        if (equal("/*")) s = STATE.SCRIPT_TAG | STATE.COMMENT | STATE.MULTILINE;
+        else if (equal("//")) s = STATE.SCRIPT_TAG | STATE.COMMENT | STATE.ONELINE;
+        else if (equal("'")) s = STATE.SCRIPT_TAG | STATE.SINGLE_QUOTE;
+        else if (equal('"')) s = STATE.SCRIPT_TAG | STATE.DOUBLE_QUOTE;
+        else if (equal("`")) s = STATE.SCRIPT_TAG | STATE.MULTILINE;
+        else if (equal("<")) {
+          if (equal("</script>", cut(i, i + 9))) {
             s = STATE.TEXT;
             i--;
             this.close();
@@ -293,31 +293,31 @@ function process(html, handler) {
 
     this[STATE.SCRIPT_TAG | STATE.COMMENT | STATE.MULTILINE] = {
       do: function () {
-        if (equals("*/")) s = STATE.SCRIPT_TAG;
+        if (equal("*/")) s = STATE.SCRIPT_TAG;
       },
     };
 
     this[STATE.SCRIPT_TAG | STATE.COMMENT | STATE.ONELINE] = {
       do: function () {
-        if (equals("\n")) s = STATE.SCRIPT_TAG;
+        if (equal("\n")) s = STATE.SCRIPT_TAG;
       },
     };
 
     this[STATE.SCRIPT_TAG | STATE.SINGLE_QUOTE] = {
       do: function () {
-        if (equals("'")) s = STATE.SCRIPT_TAG;
+        if (equal("'")) s = STATE.SCRIPT_TAG;
       },
     };
 
     this[STATE.SCRIPT_TAG | STATE.DOUBLE_QUOTE] = {
       do: function () {
-        if (equals('"')) s = STATE.SCRIPT_TAG;
+        if (equal('"')) s = STATE.SCRIPT_TAG;
       },
     };
 
     this[STATE.SCRIPT_TAG | STATE.MULTILINE] = {
       do: function () {
-        if (equals("`")) s = STATE.SCRIPT_TAG;
+        if (equal("`")) s = STATE.SCRIPT_TAG;
       },
     };
 
@@ -333,13 +333,16 @@ function process(html, handler) {
         handler.onAttrName(comment);
       },
       do: function () {
-        if (equals("-->", cut(i - 2, i + 1))) s = STATE.TEXT;
+        if (equal("-->", cut(i - 2, i + 1))) s = STATE.TEXT;
       },
     };
   })();
 
-  var transition;
+  var transition = {},
+    last_exit;
   for (; i < html.length; i++, c = html[i]) {
+    last_exit = false;
+
     transition = MACHINE[s];
     if (!transition) continue;
 
@@ -349,8 +352,13 @@ function process(html, handler) {
     if (!transition.do) continue;
     transition.do();
 
-    if (s != p && transition.exit) transition.exit();
+    if (s != p && transition.exit) {
+      transition.exit();
+
+      last_exit = true;
+    }
   }
+  if (!last_exit && transition.exit) transition.exit();
 }
 
 function parse(html) {
