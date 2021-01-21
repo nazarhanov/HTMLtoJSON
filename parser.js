@@ -361,8 +361,20 @@ function process(html, handler) {
   if (!last_exit && transition.exit) transition.exit();
 }
 
+function clear(node) {
+  if (node.type === "root" || node.type === "node") {
+    delete node.parent;
+    delete node.last;
+
+    if (node.children)
+      node.children.forEach(function (node) {
+        clear(node);
+      });
+  }
+}
+
 function parse(html) {
-  var //
+  let //
     stack = {
       type: "root",
     },
@@ -377,30 +389,18 @@ function parse(html) {
 
     node.parent = top;
 
-    if (top.type === "root") {
-      top.children = node;
-    } else {
-      if (!top.children) top.children = [];
-      top.children.push(node);
-    }
+    if (!top.children) top.children = [];
+    top.children.push(node);
 
     top = node;
   };
 
   handler.onCloseTag = function (tagName) {
-    var node = top;
     top = top.parent;
-
-    delete node.last;
-    delete node.parent;
   };
 
   handler.onSelfClose = function () {
-    var node = top;
     top = top.parent;
-
-    delete node.last;
-    delete node.parent;
   };
 
   handler.onAttrName = function (attrName) {
@@ -436,9 +436,7 @@ function parse(html) {
   };
 
   process(html, handler);
-
-  delete top.parent;
-  delete top.last;
+  clear(stack);
 
   return stack;
 }
