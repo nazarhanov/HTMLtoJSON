@@ -1,6 +1,7 @@
 # HTMLtoJSON
 
 Fast & Tiny HTML parser (No RegExp). Module parser.js fully writed in ES5 syntax.
+[Try it on git.io/htmltojson](https://git.io/htmltojson)
 
 ## Example
 
