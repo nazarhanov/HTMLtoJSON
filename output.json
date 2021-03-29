@@ -6,155 +6,161 @@
       "tagName": "!DOCTYPE",
       "attrs": {
         "html": ""
+      }
+    },
+    {
+      "type": "text",
+      "text": "\r\n"
+    },
+    {
+      "type": "node",
+      "tagName": "html",
+      "attrs": {
+        "lang": "en"
       },
       "children": [
         {
           "type": "text",
-          "text": "\r\n"
+          "text": "\r\n  "
         },
         {
           "type": "node",
-          "tagName": "html",
+          "tagName": "head",
+          "children": [
+            {
+              "type": "text",
+              "text": "\r\n    "
+            },
+            {
+              "type": "node",
+              "tagName": "meta",
+              "attrs": {
+                "charset": "UTF-8"
+              }
+            },
+            {
+              "type": "text",
+              "text": "\r\n    "
+            },
+            {
+              "type": "node",
+              "tagName": "meta",
+              "attrs": {
+                "name": "viewport",
+                "content": "width=device-width, initial-scale=1.0"
+              }
+            },
+            {
+              "type": "text",
+              "text": "\r\n    "
+            },
+            {
+              "type": "node",
+              "tagName": "title",
+              "children": [
+                {
+                  "type": "text",
+                  "text": "Page"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "\r\n  "
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "\r\n  "
+        },
+        {
+          "type": "node",
+          "tagName": "body",
           "attrs": {
-            "lang": "en"
+            "class": "page"
           },
           "children": [
             {
               "type": "text",
-              "text": "\r\n  "
+              "text": "\r\n    "
             },
             {
               "type": "node",
-              "tagName": "head",
-              "children": [
-                {
-                  "type": "text",
-                  "text": "\r\n    "
-                },
-                {
-                  "type": "node",
-                  "tagName": "meta",
-                  "attrs": {
-                    "charset": "UTF-8"
-                  }
-                },
-                {
-                  "type": "text",
-                  "text": "\r\n    "
-                },
-                {
-                  "type": "node",
-                  "tagName": "meta",
-                  "attrs": {
-                    "name": "viewport",
-                    "content": "width=device-width, initial-scale=1.0"
-                  }
-                },
-                {
-                  "type": "text",
-                  "text": "\r\n    "
-                },
-                {
-                  "type": "node",
-                  "tagName": "title",
-                  "children": [
-                    {
-                      "type": "text",
-                      "text": "Page"
-                    }
-                  ]
-                },
-                {
-                  "type": "text",
-                  "text": "\r\n  "
-                }
-              ]
-            },
-            {
-              "type": "text",
-              "text": "\r\n  "
-            },
-            {
-              "type": "node",
-              "tagName": "body",
+              "tagName": "header",
               "attrs": {
-                "class": "page"
+                "class": "header"
               },
               "children": [
                 {
                   "type": "text",
-                  "text": "\r\n    "
-                },
-                {
-                  "type": "node",
-                  "tagName": "header",
-                  "attrs": {
-                    "class": "header"
-                  },
-                  "children": [
-                    {
-                      "type": "text",
-                      "text": "header"
-                    }
-                  ]
-                },
-                {
-                  "type": "text",
-                  "text": "\r\n    "
-                },
-                {
-                  "type": "node",
-                  "tagName": "main",
-                  "attrs": {
-                    "class": "main"
-                  },
-                  "children": [
-                    {
-                      "type": "text",
-                      "text": "hello"
-                    }
-                  ]
-                },
-                {
-                  "type": "text",
-                  "text": "\r\n    "
-                },
-                {
-                  "type": "node",
-                  "tagName": "footer",
-                  "attrs": {
-                    "class": "footer"
-                  },
-                  "children": [
-                    {
-                      "type": "text",
-                      "text": "footer"
-                    }
-                  ]
-                },
-                {
-                  "type": "text",
-                  "text": "\r\n  "
+                  "text": "header"
                 }
               ]
             },
             {
               "type": "text",
-              "text": "\r\n\r\n  "
+              "text": "\r\n    "
             },
             {
               "type": "node",
-              "tagName": "script",
+              "tagName": "main",
+              "attrs": {
+                "class": "main"
+              },
               "children": [
                 {
                   "type": "text",
-                  "text": "\r\n    // html inside script works (processes) too ..\r\n    // parser excepts js comments and strings\r\n    var popup = `<div class=\"popup\"></div>`;\r\n\r\n    document.body.innerHTML += popup;\r\n  "
+                  "text": "hello"
                 }
               ]
             },
             {
               "type": "text",
-              "text": "\r\n"
+              "text": "\r\n    "
+            },
+            {
+              "type": "node",
+              "tagName": "footer",
+              "attrs": {
+                "class": "footer"
+              },
+              "children": [
+                {
+                  "type": "text",
+                  "text": "footer"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "\r\n  "
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "\r\n\r\n  "
+        },
+        {
+          "type": "node",
+          "tagName": "img",
+          "attrs": {
+            "src": "#",
+            "alt": "HTML self closing tag example"
+          }
+        },
+        {
+          "type": "text",
+          "text": "\r\n\r\n  "
+        },
+        {
+          "type": "node",
+          "tagName": "script",
+          "children": [
+            {
+              "type": "text",
+              "text": "\r\n    // html inside script works (processes) too ..\r\n    // parser excepts js comments and strings\r\n    var popup = `<div class=\"popup\"></div>`;\r\n\r\n    document.body.innerHTML += popup;\r\n  "
             }
           ]
         },
@@ -163,6 +169,10 @@
           "text": "\r\n"
         }
       ]
+    },
+    {
+      "type": "text",
+      "text": "\r\n"
     }
   ]
 }
