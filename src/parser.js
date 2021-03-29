@@ -145,11 +145,16 @@ function process(html, handler) {
       },
       do: function () {
         if (equal("/>", cut(i - 2, i))) this.mark();
+        else this.close();
         s = STATE.TEXT;
       },
       mark: function () {
         // console.log(`SELF CLOSING`);
         handler.onSelfClose();
+      },
+      close: function () {
+        // console.log(`OPEN TAG EXIT`);
+        handler.onOpenTagExit();
       },
     };
 
@@ -374,6 +379,38 @@ function clear(node) {
 }
 
 function parse(html) {
+  let selfClosingTags = {
+    "!DOCTYPE": true,
+    "!doctype": true,
+    // void
+    area: true,
+    base: true,
+    br: true,
+    col: true,
+    command: true,
+    embed: true,
+    hr: true,
+    img: true,
+    input: true,
+    keygen: true,
+    link: true,
+    meta: true,
+    param: true,
+    source: true,
+    track: true,
+    wbr: true,
+    // svg
+    circle: true,
+    ellipse: true,
+    line: true,
+    path: true,
+    polygon: true,
+    polyline: true,
+    rect: true,
+    stop: true,
+    use: true,
+  };
+
   let //
     stack = {
       type: "root",
@@ -395,6 +432,10 @@ function parse(html) {
     top = node;
   };
 
+  handler.onOpenTagExit = function () {
+    if (selfClosingTags[top.tagName]) top = top.parent;
+  };
+
   handler.onCloseTag = function (tagName) {
     top = top.parent;
   };
@@ -406,7 +447,7 @@ function parse(html) {
   handler.onAttrName = function (attrName) {
     if (!top.attrs) top.attrs = {};
     top.last = attrName;
-    top.attrs[attrName] = true;
+    top.attrs[attrName] = "";
   };
 
   handler.onAttrValue = function (attrValue) {
