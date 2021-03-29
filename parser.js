@@ -447,7 +447,7 @@ function parse(html) {
   handler.onAttrName = function (attrName) {
     if (!top.attrs) top.attrs = {};
     top.last = attrName;
-    top.attrs[attrName] = true;
+    top.attrs[attrName] = "";
   };
 
   handler.onAttrValue = function (attrValue) {
